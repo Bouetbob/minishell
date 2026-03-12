@@ -11,6 +11,7 @@ int my_getnbr(char *str)
 {
     int len = 0;
     int is_neg = 0;
+    int result = 0;
 
     if (!str || my_strlen(str) == 0)
         return -1;
@@ -18,7 +19,6 @@ int my_getnbr(char *str)
     is_neg = (str[0] == '-');
     if (is_neg && len == 1)
         return -1;
-    int result = 0;
     for (int i = is_neg; i < len; i++) {
         if (str[i] < '0' || str[i] > '9')
             return -1;

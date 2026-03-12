@@ -65,5 +65,6 @@ void builtin_exit(shell_t *shell);
 void builtin_env(shell_t *shell);
 void rickroll(shell_t *shell);
 void builtin_boubou(shell_t *shell);
+void builtin_help(shell_t *shell);
 
 #endif

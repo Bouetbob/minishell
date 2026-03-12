@@ -49,7 +49,8 @@ EXEC_SRC    = 	main.c \
 				src/builtins/builtin_env.c \
 				src/builtins/builtin_exit.c \
 				src/builtins/builtin_rick.c \
-				src/builtins/builtin_boubou.c
+				src/builtins/builtin_boubou.c \
+				src/builtins/builtin_help.c
 
 EXEC_OBJ	= $(SRC:.c=.o)
 

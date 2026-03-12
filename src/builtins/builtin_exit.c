@@ -16,7 +16,7 @@ void builtin_exit(shell_t *shell)
         shell->status = my_getnbr(shell->args[1]);
     }
     if (code == -1)
-    shell->is_builtin = 1;
+        shell->is_builtin = 1;
     free_last_line(shell);
     exit(shell->status);
 }

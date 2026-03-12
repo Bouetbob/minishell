@@ -22,4 +22,7 @@ void check_builtins(shell_t *shell)
     if (my_strcmp(shell->args[0], "best_boi") == 0) {
         builtin_boubou(shell);
     }
+    if (my_strcmp(shell->args[0], "help") == 0) {
+        builtin_help(shell);
+    }
 }
