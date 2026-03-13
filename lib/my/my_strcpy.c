@@ -9,7 +9,7 @@
 
 char *my_strcpy(char *dest, char const *src)
 {
-    uint64_t i = 0;
+    int i = 0;
 
     for (; i < my_strlen(src); i++)
         dest[i] = src[i];

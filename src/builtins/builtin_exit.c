@@ -17,6 +17,7 @@ void builtin_exit(shell_t *shell)
     }
     if (code == -1)
         shell->is_builtin = 1;
+    my_printf("exit");
     free_last_line(shell);
     exit(shell->status);
 }

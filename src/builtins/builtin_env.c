@@ -9,6 +9,10 @@
 
 void builtin_env(shell_t *shell)
 {
+    if (!shell->env) {
+        my_printf("no env to print");
+        return;
+    }
     my_print_array(shell->env);
     shell->is_builtin = 1;
 }

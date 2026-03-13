@@ -14,7 +14,7 @@ int my_getnbr(char *str)
     int result = 0;
 
     if (!str || my_strlen(str) == 0)
-        return -1;
+        return 0;
     len = my_strlen(str);
     is_neg = (str[0] == '-');
     if (is_neg && len == 1)

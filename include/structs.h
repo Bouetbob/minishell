@@ -11,10 +11,11 @@
 typedef struct shell_s {
     int status;
     int is_builtin;
+    int is_pipe;
     char *line;
     char *cmd;
-    char **env;
     char **args;
+    char **env;
 } shell_t;
 
 #endif /* !STRUCTS_H_ */

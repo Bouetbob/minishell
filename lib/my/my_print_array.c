@@ -12,6 +12,8 @@ void my_print_array(char **array)
 {
     int i = 0;
 
+    if (!array)
+        return;
     while (array[i]) {
         my_putstr(array[i]);
         write(1, "\n", 1);

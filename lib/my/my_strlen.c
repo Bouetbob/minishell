@@ -7,9 +7,9 @@
 
 #include <stdint.h>
 
-uint64_t my_strlen(char const *str)
+int my_strlen(char const *str)
 {
-    uint64_t count = 0;
+    int count = 0;
 
     while (*str != '\0'){
         str++;

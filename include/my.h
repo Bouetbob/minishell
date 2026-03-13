@@ -23,7 +23,7 @@ void my_putchar(char c);
 int my_putnbr(int nb);
 int my_putnbr_unsigned(unsigned int nb);
 int my_putstr(char const *str);
-uint64_t my_strlen(char const *str);
+int my_strlen(char const *str);
 int process_specifier_simple(char specifier, va_list ap, int count);
 int process_specifier_complex(char specifier, va_list ap, int count);
 int my_printf(const char *format, ...);
