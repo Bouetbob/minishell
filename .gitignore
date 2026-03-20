@@ -70,5 +70,5 @@ callgrind.out*
 vgcore.*
 mysh
 tester.sh
-tests
+test*
 !boubou.txt

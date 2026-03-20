@@ -16,7 +16,6 @@
     #define UNUSED [[maybe_unused]]
     #define READ_BUFSIZE 1024
     #define TOKEN_DELIMS " \t\r\n\a"
-    #define PIPE_DELIMS "|"
     #define TOK_BUFSIZE 64
 
 // for the lib
@@ -50,7 +49,7 @@ char *my_strdup(char const *src);
 int my_get_array_size(char **array);
 void my_print_array(char **array);
 
-// for the program
+// for the base shell
 char **split_line(char *line);
 char *read_line(void);
 int cmd_exec(char *path, char **args, char **env);
@@ -66,7 +65,7 @@ int pipe_check_helper(char **args, int i);
 int is_valid_pipe(char **args);
 int count_pipes(char **args);
 
-//for builtins
+//for the builtins
 void check_builtins(shell_t *shell);
 void builtin_exit(shell_t *shell);
 void builtin_env(shell_t *shell);
