@@ -45,12 +45,12 @@ EXEC_SRC    = 	main.c \
 				src/base_shell/parse_command.c \
 				src/base_shell/exec_command.c \
 				src/base_shell/find_cmd.c \
-				src/builtins/check_builtins.c \
-				src/builtins/builtin_env.c \
-				src/builtins/builtin_exit.c \
-				src/builtins/builtin_rick.c \
-				src/builtins/builtin_boubou.c \
-				src/builtins/builtin_help.c \
+				src/builtins/base/check_builtins.c \
+				src/builtins/base/builtin_env.c \
+				src/builtins/base/builtin_exit.c \
+				src/builtins/bonus/builtin_rick.c \
+				src/builtins/bonus/builtin_boubou.c \
+				src/builtins/bonus/builtin_help.c \
 				src/pipes/pipes.c \
 				src/pipes/pipe_utils.c
 
