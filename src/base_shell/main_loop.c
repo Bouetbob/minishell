@@ -45,6 +45,10 @@ void main_loop(shell_t *shell)
             free_last_line(shell);
             continue;
         }
+        if (handle_pipes(shell)) {
+            free_last_line(shell);
+            continue;
+        }
         shell->cmd = get_cmd_path(shell->env, shell->args[0]);
         if (!shell->cmd) {
             my_printf("%s: Command not found.\n", shell->args[0]);

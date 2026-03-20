@@ -16,6 +16,7 @@
     #define UNUSED [[maybe_unused]]
     #define READ_BUFSIZE 1024
     #define TOKEN_DELIMS " \t\r\n\a"
+    #define PIPE_DELIMS "|"
     #define TOK_BUFSIZE 64
 
 // for the lib
@@ -58,6 +59,7 @@ char *get_cmd_path(char **path, char *cmd);
 void free_last_line(shell_t *shell);
 void main_loop(shell_t *shell);
 char *read_line(void);
+int handle_pipes(shell_t *shell);
 
 //for builtins
 void check_builtins(shell_t *shell);
