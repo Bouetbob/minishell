@@ -31,6 +31,18 @@ static void end_part(shell_t *shell)
     free(shell->cmd);
 }
 
+static int end_part_the_second(shell_t *shell)
+{
+    shell->cmd = get_cmd_path(shell->env, shell->args[0]);
+    if (!shell->cmd) {
+        my_printf("%s: Command not found.\n", shell->args[0]);
+        free_last_line(shell);
+        return 67;
+    }
+    end_part(shell);
+    return 0;
+}
+
 void main_loop(shell_t *shell)
 {
     shell->status = 0;
@@ -49,12 +61,7 @@ void main_loop(shell_t *shell)
             free_last_line(shell);
             continue;
         }
-        shell->cmd = get_cmd_path(shell->env, shell->args[0]);
-        if (!shell->cmd) {
-            my_printf("%s: Command not found.\n", shell->args[0]);
-            free_last_line(shell);
+        if (end_part_the_second(shell) == 67)
             continue;
-        }
-        end_part(shell);
     }
 }

@@ -51,7 +51,8 @@ EXEC_SRC    = 	main.c \
 				src/builtins/builtin_rick.c \
 				src/builtins/builtin_boubou.c \
 				src/builtins/builtin_help.c \
-				src/pipes/pipes.c
+				src/pipes/pipes.c \
+				src/pipes/pipe_utils.c
 
 EXEC_OBJ	= $(SRC:.c=.o)
 

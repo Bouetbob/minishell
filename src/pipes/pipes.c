@@ -10,40 +10,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int pipe_check_helper(char **args, int i)
-{
-    if (my_strcmp(args[i], "|") == 0) {
-        if (!args[i + 1] || my_strcmp(args[i + 1], "|") == 0) {
-            my_printf("Badly placed (.\n");
-            return 1;
-        }
-    }
-    return 0;
-}
-
-static int is_valid_pipe(char **args)
-{
-    if (my_strcmp(args[0], "|") == 0) {
-        my_printf("Badly placed (.\n");
-        return 0;
-    }
-    for (int i = 0; args[i]; i++) {
-        if (pipe_check_helper(args, i))
-            return 0;
-    }
-    return 1;
-}
-
-static int count_pipes(char **args)
-{
-    int count = 0;
-
-    for (int i = 0; args[i]; i++)
-        if (my_strcmp(args[i], "|") == 0)
-            count++;
-    return count;
-}
-
 static char ***split_pipes(char **args, int n_pipes)
 {
     char ***segments = malloc((n_pipes + 2) * sizeof(char **));

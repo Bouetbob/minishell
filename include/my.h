@@ -59,7 +59,12 @@ char *get_cmd_path(char **path, char *cmd);
 void free_last_line(shell_t *shell);
 void main_loop(shell_t *shell);
 char *read_line(void);
+
+//for the pipes
 int handle_pipes(shell_t *shell);
+int pipe_check_helper(char **args, int i);
+int is_valid_pipe(char **args);
+int count_pipes(char **args);
 
 //for builtins
 void check_builtins(shell_t *shell);
