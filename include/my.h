@@ -48,6 +48,7 @@ char *my_strcat(char *dest, char const *src);
 char *my_strdup(char const *src);
 int my_get_array_size(char **array);
 void my_print_array(char **array);
+int is_char_in_str(char *str, char c);
 
 // for the base shell
 char **split_line(char *line);
@@ -72,5 +73,6 @@ void builtin_env(shell_t *shell);
 void rickroll(shell_t *shell);
 void builtin_boubou(shell_t *shell);
 void builtin_help(shell_t *shell);
+void builtin_cd(shell_t *shell);
 
 #endif

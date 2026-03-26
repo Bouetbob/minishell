@@ -28,10 +28,10 @@ LIB_SRC     = lib/my/my_putchar.c \
 		  lib/my/my_strdup.c \
 		  lib/my/my_strcmp.c \
 		  lib/my/my_strncmp.c \
-		  lib/my/my_getchar.c \
 		  lib/my/my_get_array_size.c \
 		  lib/my/my_strcat.c \
-		  lib/my/my_print_array.c
+		  lib/my/my_print_array.c \
+		  lib/my/is_char_in_str.c
 		
 
 LIB_OBJ     = $(LIB_SRC:.c=.o)
@@ -52,7 +52,8 @@ EXEC_SRC    = 	main.c \
 				src/builtins/bonus/builtin_boubou.c \
 				src/builtins/bonus/builtin_help.c \
 				src/pipes/pipes.c \
-				src/pipes/pipe_utils.c
+				src/pipes/pipe_utils.c \
+				src/builtins/base/builtin_cd.c
 
 EXEC_OBJ	= $(SRC:.c=.o)
 

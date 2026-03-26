@@ -29,8 +29,11 @@ char **get_path(char **env)
 char *get_cmd_path(char **env, char *cmd)
 {
     char *temp = NULL;
-    char **path = get_path(env);
+    char **path = NULL;
 
+    if (is_char_in_str(cmd, '/'))
+        return my_strdup(cmd);
+    path = get_path(env);
     if (!path)
         return NULL;
     for (int i = 1; path[i]; i++) {

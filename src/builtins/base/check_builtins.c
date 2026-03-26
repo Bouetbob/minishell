@@ -10,19 +10,16 @@
 
 void check_builtins(shell_t *shell)
 {
-    if (my_strcmp(shell->args[0], "exit") == 0) {
+    if (my_strcmp(shell->args[0], "exit") == 0)
         builtin_exit(shell);
-    }
-    if (my_strcmp(shell->args[0], "env") == 0) {
+    if (my_strcmp(shell->args[0], "env") == 0)
         builtin_env(shell);
-    }
-    if (my_strcmp(shell->args[0], "rick") == 0) {
+    if (my_strcmp(shell->args[0], "rick") == 0)
         rickroll(shell);
-    }
-    if (my_strcmp(shell->args[0], "best_boi") == 0) {
+    if (my_strcmp(shell->args[0], "best_boi") == 0)
         builtin_boubou(shell);
-    }
-    if (my_strcmp(shell->args[0], "help") == 0) {
+    if (my_strcmp(shell->args[0], "help") == 0)
         builtin_help(shell);
-    }
+    if (my_strcmp(shell->args[0], "cd") == 0)
+        builtin_cd(shell);
 }
