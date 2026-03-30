@@ -14,8 +14,9 @@ void builtin_cd(shell_t *shell)
 {
     if (shell->args[1]) {
         if (chdir(shell->args[1]) == -1) {
-            my_printf("Error: no such file or directory\n");
+            my_printf("%s: no such file or directory\n", shell->args[1]);
             shell->is_builtin = 1;
+            shell->status = 1;
             return;
         }
         shell->is_builtin = 1;

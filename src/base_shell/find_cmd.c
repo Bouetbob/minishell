@@ -8,7 +8,6 @@
 #include "my.h"
 #include <stdlib.h>
 #include <unistd.h>
-#include <string.h>
 
 char **get_path(char **env)
 {
@@ -18,7 +17,7 @@ char **get_path(char **env)
     for (int i = 0; env[i]; i++) {
         if (my_strncmp("PATH", env[i], 4) == 0) {
             temp = my_strdup(env[i]);
-            path = my_stwa(temp, ":=");
+            path = split_line(temp, ":=");
             free(temp);
             return path;
         }

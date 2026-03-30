@@ -21,7 +21,7 @@ static void ask_user(shell_t *shell)
     shell->is_builtin = 0;
     my_printf("> ");
     shell->line = read_line();
-    shell->args = split_line(shell->line);
+    shell->args = split_line(shell->line, TOKEN_DELIMS);
 }
 
 static void end_part(shell_t *shell)
@@ -46,7 +46,7 @@ static int end_part_the_second(shell_t *shell)
 void main_loop(shell_t *shell)
 {
     shell->status = 0;
-    while (!shell->status) {
+    while (1) {
         ask_user(shell);
         if (!shell->args[0]) {
             free_last_line(shell);

@@ -51,7 +51,7 @@ void my_print_array(char **array);
 int is_char_in_str(char *str, char c);
 
 // for the base shell
-char **split_line(char *line);
+char **split_line(char *line, char *delims);
 char *read_line(void);
 int cmd_exec(char *path, char **args, char **env);
 char **get_path(char **env);

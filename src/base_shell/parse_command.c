@@ -27,7 +27,7 @@ char *read_line(void)
     return line;
 }
 
-char **split_line(char *line)
+char **split_line(char *line, char *delims)
 {
     int position = 0;
     char **tokens = malloc(TOK_BUFSIZE * sizeof(char *));
@@ -35,7 +35,7 @@ char **split_line(char *line)
 
     if (!tokens)
         exit(84);
-    token = strtok(line, TOKEN_DELIMS);
+    token = strtok(line, delims);
     while (token != NULL) {
         tokens[position] = token;
         position++;
@@ -43,7 +43,7 @@ char **split_line(char *line)
             tokens[position] = NULL;
             return tokens;
         }
-        token = strtok(NULL, TOKEN_DELIMS);
+        token = strtok(NULL, delims);
     }
     tokens[position] = NULL;
     return tokens;
