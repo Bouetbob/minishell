@@ -11,6 +11,6 @@ void builtin_boubou(shell_t *shell)
 {
     char *args[] = {"/bin/cat", "assets/boubou.txt", NULL};
 
-    cmd_exec("/bin/cat", args, shell->env);
+    cmd_exec("/bin/cat", args, shell->env, NULL);
     shell->is_builtin = 1;
 }

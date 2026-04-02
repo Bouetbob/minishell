@@ -53,7 +53,7 @@ int is_char_in_str(char *str, char c);
 // for the base shell
 char **split_line(char *line, char *delims);
 char *read_line(void);
-int cmd_exec(char *path, char **args, char **env);
+int cmd_exec(char *cmd, char **args, char **env, redir_t *redir);
 char **get_path(char **env);
 char *get_cmd_path(char **path, char *cmd);
 void free_last_line(shell_t *shell);
@@ -65,6 +65,19 @@ int handle_pipes(shell_t *shell);
 int pipe_check_helper(char **args, int i);
 int is_valid_pipe(char **args);
 int count_pipes(char **args);
+
+//for redirections
+int apply_redirections(redir_t *r);
+int parse_redirections(char **args, redir_t *r);
+int prepare_heredoc(redir_t *r);
+int apply_redirections(redir_t *r);
+void free_redir(redir_t *r);
+int handle_token(char **args, int i, redir_t *r);
+void shift_args(char **args, int i);
+void init_redir(redir_t *r);
+int is_redir(char *tok);
+int parse_redirections(char **args, redir_t *r);
+int is_delim(char *line, char *delim);
 
 //for the builtins
 void check_builtins(shell_t *shell);

@@ -24,22 +24,39 @@ static void ask_user(shell_t *shell)
     shell->args = split_line(shell->line, TOKEN_DELIMS);
 }
 
-static void end_part(shell_t *shell)
+static void end_part(shell_t *shell, redir_t *redir)
 {
-    shell->status = cmd_exec(shell->cmd, shell->args, shell->env);
+    shell->status = cmd_exec(shell->cmd, shell->args, shell->env, redir);
     free_last_line(shell);
     free(shell->cmd);
 }
 
+static int setup_redir(shell_t *shell, redir_t *redir)
+{
+    if (parse_redirections(shell->args, redir) == -1)
+        return -1;
+    if (redir->heredoc_delim && prepare_heredoc(redir) == -1)
+        return -1;
+    return 0;
+}
+
 static int end_part_the_second(shell_t *shell)
 {
-    shell->cmd = get_cmd_path(shell->env, shell->args[0]);
-    if (!shell->cmd) {
-        my_printf("%s: Command not found.\n", shell->args[0]);
+    redir_t redir;
+
+    if (setup_redir(shell, &redir) == -1) {
         free_last_line(shell);
         return 67;
     }
-    end_part(shell);
+    shell->cmd = get_cmd_path(shell->env, shell->args[0]);
+    if (!shell->cmd) {
+        my_printf("%s: Command not found.\n", shell->args[0]);
+        free_redir(&redir);
+        free_last_line(shell);
+        return 67;
+    }
+    end_part(shell, &redir);
+    free_redir(&redir);
     return 0;
 }
 

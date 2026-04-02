@@ -12,6 +12,6 @@ void rickroll(shell_t *shell)
 {
     char *args[] = {"/bin/curl", "ascii.live/rick", NULL};
 
-    cmd_exec("/bin/curl", args, shell->env);
+    cmd_exec("/bin/curl", args, shell->env, NULL);
     shell->is_builtin = 1;
 }

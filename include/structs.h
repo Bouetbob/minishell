@@ -24,4 +24,12 @@ typedef struct pipe_util_s {
     char **env;
 } pipe_util_t;
 
+typedef struct redir_s {
+    char *in_file;
+    char *out_file;
+    char *heredoc_delim;
+    int heredoc_fd;
+    int append;
+} redir_t;
+
 #endif /* !STRUCTS_H_ */

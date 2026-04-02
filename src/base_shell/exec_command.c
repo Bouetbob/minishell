@@ -6,12 +6,19 @@
 */
 
 #include "my.h"
+#include "structs.h"
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
-int cmd_exec(char *cmd, char **args, char **env)
+void redirection_part(redir_t *redir)
+{
+    if (redir)
+        apply_redirections(redir);
+}
+
+int cmd_exec(char *cmd, char **args, char **env, redir_t *redir)
 {
     pid_t pid = fork();
     pid_t wpid;
@@ -21,6 +28,7 @@ int cmd_exec(char *cmd, char **args, char **env)
         return 0;
     if (pid == 0) {
         signal(SIGINT, SIG_DFL);
+        redirection_part(redir);
         if (execve(cmd, args, env) == -1)
             exit(84);
     }
