@@ -6,7 +6,6 @@
 */
 
 #include "my.h"
-#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -17,12 +16,8 @@ char *read_line(void)
     size_t bufsize = 0;
 
     if (getline(&line, &bufsize, stdin) == -1) {
-        if (errno == 0) {
-            exit(0);
-        } else {
-            perror("readline");
-            exit(1);
-        }
+        free(line);
+        exit(0);
     }
     return line;
 }
