@@ -48,3 +48,33 @@ char **split_line(char *line, char *delims)
     tokens[position] = NULL;
     return tokens;
 }
+
+static void handle_quotes(char *str)
+{
+    int i = 0;
+    int j = 0;
+    char quote = 0;
+
+    while (str[i]) {
+        if ((str[i] == '\'' || str[i] == '"') && !quote) {
+            quote = str[i];
+            i++;
+            continue;
+        }
+        if (str[i] == quote) {
+            quote = 0;
+            i++;
+            continue;
+        }
+        str[j] = str[i];
+        i++;
+        j++;
+    }
+    str[j] = '\0';
+}
+
+void handle_quotes_args(char **args)
+{
+    for (int i = 0; args[i]; i++)
+        handle_quotes(args[i]);
+}

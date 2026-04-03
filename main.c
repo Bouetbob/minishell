@@ -16,11 +16,26 @@ static void handle_sigint(UNUSED int signal)
     write(1, "\n> ", 3);
 }
 
-int main(UNUSED int ac, UNUSED char **av, char **env)
+static char **dup_env(char **envp)
 {
-    shell_t *shell = malloc(sizeof(shell_t));
+    int size = my_get_array_size(envp);
+    char **env = malloc((size + 1) * sizeof(char *));
+
+    if (!env)
+        exit(84);
+    for (int i = 0; i < size; i++)
+        env[i] = my_strdup(envp[i]);
+    env[size] = NULL;
+    return env;
+}
+
+int main(UNUSED int ac, UNUSED char **av, char **envp)
+{
+    shell_t shell;
 
     signal(SIGINT, handle_sigint);
-    shell->env = env;
-    main_loop(shell);
+    shell.env = dup_env(envp);
+    shell.status = 0;
+    main_loop(&shell);
+    return shell.status;
 }

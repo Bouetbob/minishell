@@ -23,6 +23,7 @@ static void ask_user(shell_t *shell)
     my_printf("> ");
     shell->line = read_line();
     shell->args = split_line(shell->line, TOKEN_DELIMS);
+    handle_quotes_args(shell->args);
 }
 
 static void end_part(shell_t *shell, redir_t *redir)

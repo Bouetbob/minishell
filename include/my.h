@@ -17,6 +17,7 @@
     #define READ_BUFSIZE 1024
     #define TOKEN_DELIMS " \t\r\n\a"
     #define TOK_BUFSIZE 64
+    #define CD_BUFSIZE 1024
 
 // for the lib
 void my_putchar(char c);
@@ -59,6 +60,7 @@ char *get_cmd_path(char **path, char *cmd);
 void free_last_line(shell_t *shell);
 void main_loop(shell_t *shell);
 char *read_line(void);
+void handle_quotes_args(char **args);
 
 //for the pipes
 int handle_pipes(shell_t *shell);
