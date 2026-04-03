@@ -44,8 +44,16 @@ static void child_setup_io(pipe_util_t *pipe_util)
 
 static void child_exec(char **segment, char **env)
 {
-    char *cmd = get_cmd_path(env, segment[0]);
+    redir_t redir;
+    char *cmd;
 
+    if (parse_redirections(segment, &redir) == -1)
+        exit(1);
+    if (redir.heredoc_delim && prepare_heredoc(&redir) == -1)
+        exit(1);
+    if (apply_redirections(&redir) == -1)
+        exit(1);
+    cmd = get_cmd_path(env, segment[0]);
     if (!cmd) {
         my_printf("%s: Command not found.\n", segment[0]);
         exit(127);

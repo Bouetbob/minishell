@@ -12,10 +12,10 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-void redirection_part(redir_t *redir)
+static void redirection_part(redir_t *redir)
 {
-    if (redir)
-        apply_redirections(redir);
+    if (redir && apply_redirections(redir) == -1)
+        exit(1);
 }
 
 int cmd_exec(char *cmd, char **args, char **env, redir_t *redir)
