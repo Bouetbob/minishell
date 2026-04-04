@@ -11,22 +11,29 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+static void handle_output_token(char **args, int i, redir_t *r)
+{
+    if (my_strcmp(args[i], ">") == 0) {
+        r->out_file = args[i + 1];
+        r->append = 0;
+    }
+    if (my_strcmp(args[i], ">>") == 0) {
+        r->out_file = args[i + 1];
+        r->append = 1;
+    }
+}
+
 int handle_token(char **args, int i, redir_t *r)
 {
     if (!args[i + 1]) {
-        my_printf("Missing operand for %s\n", args[i]);
+        my_printf("Missing name for redirect.\n");
         return -1;
     }
     if (my_strcmp(args[i], "<") == 0)
         r->in_file = args[i + 1];
-    if (my_strcmp(args[i], ">") == 0)
-        r->out_file = args[i + 1];
-    if (my_strcmp(args[i], ">>") == 0)
-        r->out_file = args[i + 1];
-    if (my_strcmp(args[i], ">>") == 0)
-        r->append = 1;
     if (my_strcmp(args[i], "<<") == 0)
         r->heredoc_delim = args[i + 1];
+    handle_output_token(args, i, r);
     shift_args(args, i);
     shift_args(args, i);
     return 0;

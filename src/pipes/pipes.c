@@ -16,13 +16,15 @@ static char ***split_pipes(char **args, int n_pipes)
     int seg = 0;
     int start = 0;
 
+    if (!segments)
+        return NULL;
     for (int i = 0; args[i]; i++) {
-        if (my_strcmp(args[i], "|") == 0) {
-            args[i] = NULL;
-            segments[seg] = &args[start];
-            seg++;
-            start = i + 1;
-        }
+        if (my_strcmp(args[i], "|") != 0)
+            continue;
+        args[i] = NULL;
+        segments[seg] = &args[start];
+        seg++;
+        start = i + 1;
     }
     segments[seg] = &args[start];
     seg++;

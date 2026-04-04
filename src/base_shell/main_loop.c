@@ -17,15 +17,6 @@ void free_last_line(shell_t *shell)
     free(shell->args);
 }
 
-static void ask_user(shell_t *shell)
-{
-    shell->is_builtin = 0;
-    my_printf("> ");
-    shell->line = read_line();
-    shell->args = split_line(shell->line, TOKEN_DELIMS);
-    handle_quotes_args(shell->args);
-}
-
 static void end_part(shell_t *shell, redir_t *redir)
 {
     shell->status = cmd_exec(shell->cmd, shell->args, shell->env, redir);
@@ -46,69 +37,63 @@ static int end_part_the_second(shell_t *shell)
     redir_t redir;
 
     if (setup_redir(shell, &redir) == -1)
-        return 67;
+        return 1;
     shell->cmd = get_cmd_path(shell->env, shell->args[0]);
     if (!shell->cmd) {
         my_printf("%s: Command not found.\n", shell->args[0]);
         free_redir(&redir);
-        return 67;
+        return 1;
     }
     end_part(shell, &redir);
     free_redir(&redir);
     return 0;
 }
 
-static char ***split_semicolons(char **args)
+static void run_segment(shell_t *shell, char **segment_args)
 {
-    char ***segments = malloc(TOK_BUFSIZE * sizeof(char **));
-    int seg = 0;
-    int start = 0;
+    char **old_args = shell->args;
 
-    if (!segments)
-        exit(84);
-    for (int i = 0; args[i]; i++) {
-        if (my_strcmp(args[i], ";") != 0)
-            continue;
-        args[i] = NULL;
-        segments[seg] = &args[start];
-        seg++;
-        start = i + 1;
+    if (!segment_args || !segment_args[0])
+        return;
+    shell->args = segment_args;
+    shell->is_builtin = 0;
+    check_builtins(shell);
+    if (shell->is_builtin || handle_pipes(shell)) {
+        shell->args = old_args;
+        return;
     }
-    segments[seg] = &args[start];
-    seg++;
-    segments[seg] = NULL;
-    return segments;
+    shell->status = end_part_the_second(shell);
+    shell->args = old_args;
 }
 
-static void run_segment(shell_t *shell, char **args)
+static void process_line_segments(shell_t *shell)
 {
-    shell->args = args;
-    if (!shell->args[0])
+    int start = 0;
+
+    if (!shell->args)
         return;
-    check_builtins(shell);
-    if (shell->is_builtin)
-        return;
-    if (handle_pipes(shell))
-        return;
-    end_part_the_second(shell);
+    for (int i = 0; shell->args[i]; i++) {
+        if (my_strcmp(shell->args[i], ";") != 0)
+            continue;
+        shell->args[i] = NULL;
+        run_segment(shell, &shell->args[start]);
+        start = i + 1;
+    }
+    run_segment(shell, &shell->args[start]);
 }
 
 void main_loop(shell_t *shell)
 {
-    char ***segments;
-    char **original_args;
-
-    shell->status = 0;
     while (1) {
-        ask_user(shell);
-        original_args = shell->args;
-        segments = split_semicolons(shell->args);
-        for (int i = 0; segments[i]; i++) {
-            shell->is_builtin = 0;
-            run_segment(shell, segments[i]);
+        my_printf("> ");
+        shell->line = read_line();
+        shell->args = split_line(shell->line, TOKEN_DELIMS);
+        if (!shell->args) {
+            free(shell->line);
+            continue;
         }
-        free(segments);
-        shell->args = original_args;
+        handle_quotes_args(shell->args);
+        process_line_segments(shell);
         free_last_line(shell);
     }
 }

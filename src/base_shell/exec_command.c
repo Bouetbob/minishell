@@ -21,23 +21,20 @@ static void redirection_part(redir_t *redir)
 int cmd_exec(char *cmd, char **args, char **env, redir_t *redir)
 {
     pid_t pid = fork();
-    pid_t wpid;
     int status = 0;
 
     if (pid == -1)
-        return 0;
+        return 84;
     if (pid == 0) {
         signal(SIGINT, SIG_DFL);
         redirection_part(redir);
         if (execve(cmd, args, env) == -1)
-            exit(84);
+            exit(1);
     }
-    do {
-        wpid = waitpid(pid, &status, WUNTRACED | WCONTINUED);
-        if (wpid == -1) {
-            perror("waitpid");
-            exit(84);
-        }
-    } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+    waitpid(pid, &status, 0);
+    if (WIFEXITED(status))
+        return WEXITSTATUS(status);
+    if (WIFSIGNALED(status))
+        return WTERMSIG(status) + 128;
     return 0;
 }
