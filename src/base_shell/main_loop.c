@@ -31,21 +31,23 @@ static int setup_redir(shell_t *shell, redir_t *redir)
     return 0;
 }
 
-static int end_part_the_second(shell_t *shell)
+static void end_part_the_second(shell_t *shell)
 {
     redir_t redir;
 
-    if (setup_redir(shell, &redir) == -1)
-        return 1;
+    if (setup_redir(shell, &redir) == -1) {
+        shell->status = 1;
+        return;
+    }
     shell->cmd = get_cmd_path(shell->env, shell->args[0]);
     if (!shell->cmd) {
         my_printf("%s: Command not found.\n", shell->args[0]);
         free_redir(&redir);
-        return 1;
+        shell->status = 1;
+        return;
     }
     end_part(shell, &redir);
     free_redir(&redir);
-    return 0;
 }
 
 static void run_segment(shell_t *shell, char **segment_args)
@@ -56,12 +58,18 @@ static void run_segment(shell_t *shell, char **segment_args)
         return;
     shell->args = segment_args;
     shell->is_builtin = 0;
-    check_builtins(shell);
-    if (shell->is_builtin || handle_pipes(shell)) {
+    if (count_pipes(shell->args) > 0 && !is_valid_pipe(shell->args)) {
+        shell->status = 1;
         shell->args = old_args;
         return;
     }
-    shell->status = end_part_the_second(shell);
+    if (handle_pipes(shell)) {
+        shell->args = old_args;
+        return;
+    }
+    check_builtins(shell);
+    if (!shell->is_builtin)
+        end_part_the_second(shell);
     shell->args = old_args;
 }
 
@@ -97,7 +105,7 @@ void main_loop(shell_t *shell)
             my_printf("> ");
         raw = read_line();
         if (!raw)
-            exit(shell->status);
+            break;
         shell->line = preprocess_line(raw);
         free(raw);
         if (!shell->line)

@@ -11,7 +11,7 @@ int pipe_check_helper(char **args, int i)
 {
     if (my_strcmp(args[i], "|") == 0) {
         if (!args[i + 1] || my_strcmp(args[i + 1], "|") == 0) {
-            my_printf("Badly placed (.\n");
+            my_printf("Invalid null command.\n");
             return 1;
         }
     }
@@ -21,7 +21,7 @@ int pipe_check_helper(char **args, int i)
 int is_valid_pipe(char **args)
 {
     if (my_strcmp(args[0], "|") == 0) {
-        my_printf("Badly placed (.\n");
+        my_printf("Invalid null command.\n");
         return 0;
     }
     for (int i = 0; args[i]; i++) {

@@ -60,7 +60,7 @@ static void child_exec(char **segment, char **env)
     cmd = get_cmd_path(env, segment[0]);
     if (!cmd) {
         my_printf("%s: Command not found.\n", segment[0]);
-        exit(127);
+        exit(1);
     }
     execve(cmd, segment, env);
     exit(84);

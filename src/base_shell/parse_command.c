@@ -80,7 +80,7 @@ char **split_line(char *line, char *delims)
         exit(84);
     token = strtok(line, delims);
     while (token != NULL) {
-        tokens[position] = token;
+        tokens[position] = my_strdup(token);
         position++;
         if (position >= TOK_BUFSIZE - 1) {
             tokens[position] = NULL;
