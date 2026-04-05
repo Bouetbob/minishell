@@ -49,6 +49,8 @@ static void child_exec(char **segment, char **env)
     redir_t redir;
     char *cmd;
 
+    if (!segment || !segment[0])
+        exit(1);
     if (parse_redirections(segment, &redir) == -1)
         exit(1);
     if (redir.heredoc_delim && prepare_heredoc(&redir) == -1)

@@ -40,26 +40,47 @@ static void set_env_var(char **env, char *key, char *value)
     }
 }
 
+static char *get_cd_target(shell_t *shell)
+{
+    if (shell->args[1])
+        return shell->args[1];
+    return get_env_var(shell->env, "HOME");
+}
+
+static void update_env_dirs(shell_t *shell, char *prev_dup, char *cwd)
+{
+    set_env_var(shell->env, "OLDPWD", prev_dup ? prev_dup : cwd);
+    set_env_var(shell->env, "PWD", cwd);
+    free(prev_dup);
+    shell->status = 0;
+}
+
+void end_cd(char *cwd, shell_t *shell, char *prev_dup)
+{
+    getcwd(cwd, sizeof(cwd));
+    update_env_dirs(shell, prev_dup, cwd);
+}
+
 void builtin_cd(shell_t *shell)
 {
     char cwd[CD_BUFSIZE];
     char *prev;
     char *prev_dup;
+    char *target = get_cd_target(shell);
 
     shell->is_builtin = 1;
-    if (!shell->args[1])
+    if (!target) {
+        my_printf("cd: HOME not set\n");
+        shell->status = 1;
         return;
+    }
     prev = get_env_var(shell->env, "PWD");
     prev_dup = prev ? my_strdup(prev) : NULL;
-    if (chdir(shell->args[1]) == -1) {
-        my_printf("%s: no such file or directory\n", shell->args[1]);
+    if (chdir(target) == -1) {
+        my_printf("%s: no such file or directory\n", target);
         free(prev_dup);
         shell->status = 1;
         return;
     }
-    getcwd(cwd, sizeof(cwd));
-    set_env_var(shell->env, "OLDPWD", prev_dup ? prev_dup : cwd);
-    set_env_var(shell->env, "PWD", cwd);
-    free(prev_dup);
-    shell->status = 0;
+    end_cd(cwd, shell, prev_dup);
 }

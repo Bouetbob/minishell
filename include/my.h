@@ -56,11 +56,12 @@ char **split_line(char *line, char *delims);
 char *read_line(void);
 int cmd_exec(char *cmd, char **args, char **env, redir_t *redir);
 char **get_path(char **env);
-char *get_cmd_path(char **path, char *cmd);
+char *get_cmd_path(char **env, char *cmd);
 void free_last_line(shell_t *shell);
 void main_loop(shell_t *shell);
 char *read_line(void);
 void handle_quotes_args(char **args);
+char *preprocess_line(const char *line);
 
 //for the pipes
 int handle_pipes(shell_t *shell);

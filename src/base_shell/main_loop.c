@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-
 void free_last_line(shell_t *shell)
 {
     free(shell->line);
@@ -82,18 +81,32 @@ static void process_line_segments(shell_t *shell)
     run_segment(shell, &shell->args[start]);
 }
 
+void this_function_is_getting_way_too_long(shell_t *shell)
+{
+    handle_quotes_args(shell->args);
+    process_line_segments(shell);
+    free_last_line(shell);
+}
+
 void main_loop(shell_t *shell)
 {
+    char *raw;
+
     while (1) {
-        my_printf("> ");
-        shell->line = read_line();
+        if (isatty(0))
+            my_printf("> ");
+        raw = read_line();
+        if (!raw)
+            exit(shell->status);
+        shell->line = preprocess_line(raw);
+        free(raw);
+        if (!shell->line)
+            continue;
         shell->args = split_line(shell->line, TOKEN_DELIMS);
         if (!shell->args) {
             free(shell->line);
             continue;
         }
-        handle_quotes_args(shell->args);
-        process_line_segments(shell);
-        free_last_line(shell);
+        this_function_is_getting_way_too_long(shell);
     }
 }
