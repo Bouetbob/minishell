@@ -5,7 +5,7 @@
 ## compile the lib and basic rules
 ##
 
-CC      = epiclang
+CC      = clang
 
 CFLAGS  = -Iinclude -Wall -Wextra
 
